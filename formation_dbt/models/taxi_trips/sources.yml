@@ -1,0 +1,15 @@
+version: 2
+
+sources:
+  - name: tlc_taxi_trips
+    tables:
+      - name: raw_yellow_tripdata
+        config:
+          external_location: >
+            read_parquet(
+              list_transform(
+                range(1, 13),
+                m -> 'https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2024-' ||
+                     lpad(cast(m as varchar), 2, '0') || '.parquet'
+              )
+            )
